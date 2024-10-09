@@ -1,0 +1,5 @@
+defaultProject: flexgen-343700
+defaultLocation: US
+defaultDataset: golf_lake
+defaultAssertionDataset: dataform_assertions
+dataformCoreVersion: 3.0.0

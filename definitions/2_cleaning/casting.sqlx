@@ -1,0 +1,26 @@
+config {
+    type: "table"
+}
+
+SELECT
+  Practice_Date AS practice_date,
+  shot_id,
+  --ClubSort,
+  Club AS club,
+  Ball AS ball,
+  Ball_Speed__MPH_ AS ball_spee_mph,
+  Launch_Angle AS launch_angle,
+  Side_Angle AS side_angle,
+  Backspin__RPM_ AS backspin_rpm,
+  Sidespin__RPM_ AS sidespin_rpm,
+  Tilt_Angle AS tilt_angle,
+  Total_Spin__RPM_ AS total_spin_rpm,
+  Carry_YDS AS carry_yds,
+  Total_YDS AS total_yds,
+  Offline_YDS AS offline_yds,
+  Descent_Angle AS descent_angle,
+  Peak_Height__FT_ AS peak_heigh_ft
+  --To_Pin_YDS,
+  --image_url
+FROM
+  ${ref("golf_lake", "fact")}
