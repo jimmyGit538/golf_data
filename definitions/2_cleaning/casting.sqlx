@@ -8,7 +8,7 @@ SELECT
   --ClubSort,
   Club AS club,
   Ball AS ball,
-  Ball_Speed__MPH_ AS ball_spee_mph,
+  Ball_Speed__MPH_ AS ball_speed_mph,
   Launch_Angle AS launch_angle,
   Side_Angle AS side_angle,
   Backspin__RPM_ AS backspin_rpm,
