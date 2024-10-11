@@ -1,11 +1,11 @@
 config {
-    type: "table"
+    type: "table",
+    name: "cleaned"
 }
 
 SELECT
   Practice_Date AS practice_date,
   shot_id,
-  --ClubSort,
   Club AS club,
   Ball AS ball,
   Ball_Speed__MPH_ AS ball_speed_mph,
@@ -19,8 +19,10 @@ SELECT
   Total_YDS AS total_yds,
   Offline_YDS AS offline_yds,
   Descent_Angle AS descent_angle,
-  Peak_Height__FT_ AS peak_heigh_ft
+  Peak_Height__FT_ AS peak_height_ft,
+  ROW_NUMBER() OVER(PARTITION BY Club ORDER BY AVG(total_yds) DESC) as club_sort
   --To_Pin_YDS,
   --image_url
 FROM
   ${ref("golf_lake", "fact")}
+  GROUP BY ALL
