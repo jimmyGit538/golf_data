@@ -1,0 +1,12 @@
+config {
+    type: "table",
+    bigquery: {
+        partitionBy: "practice_date",
+        clusterBy: ["club", "ball"]
+    }
+}
+
+SELECT
+  *
+FROM
+  ${ref("cleaned")}
