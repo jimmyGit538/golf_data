@@ -1,0 +1,25 @@
+config {
+    type: "table",
+    schema: "golf_warehouse",
+    bigquery: {
+        clusterBy: ["club"]
+    }
+}
+
+SELECT
+  club,
+  shot_number,
+  AVG(ball_speed_mph) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotavg_ball_speed_mph,
+  AVG(launch_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotavg_launch_angle,
+  AVG(side_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotavg_side_angle,
+  AVG(backspin_rpm) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotavg_backspin_rpm,
+  AVG(sidespin_rpm) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotavg_sidespin_rpm,
+  AVG(tilt_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotavg_tilt_angle,
+  AVG(total_spin_rpm) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotavg_total_spin_rpm,
+  AVG(carry_yds) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotavg_carry_yds,
+  AVG(total_yds) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotavg_total_yds,
+  AVG(offline_yds) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotavg_offline_yds,
+  AVG(descent_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotavg_descent_angle,
+  AVG(peak_height_ft) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotavg_peak_height_ft,
+FROM
+  ${ref("cleaned")}

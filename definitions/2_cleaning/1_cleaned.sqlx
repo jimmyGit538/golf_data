@@ -5,7 +5,6 @@ config {
 
 SELECT
   Practice_Date AS practice_date,
-  shot_id,
   Club AS club,
   Ball AS ball,
   Ball_Speed__MPH_ AS ball_speed_mph,
@@ -20,9 +19,20 @@ SELECT
   Offline_YDS AS offline_yds,
   Descent_Angle AS descent_angle,
   Peak_Height__FT_ AS peak_height_ft,
-  ROW_NUMBER() OVER(PARTITION BY Club ORDER BY AVG(total_yds) DESC) as club_sort
+  c.club_sort,
+  GENERATE_UUID() as shot_id,
+  ROW_NUMBER() OVER(PARTITION BY Club ORDER BY Practice_Date) as shot_number
   --To_Pin_YDS,
   --image_url
 FROM
-  ${ref("golf_lake", "fact")}
-  GROUP BY ALL
+  ${ref("golf_lake", "fact")} f
+LEFT JOIN (
+  SELECT
+    Club,
+    DENSE_RANK() OVER(ORDER BY AVG(total_yds) DESC) AS club_sort
+  FROM
+    ${ref("golf_lake", "fact")}
+  GROUP BY
+    1 ) c
+USING
+  (Club)
