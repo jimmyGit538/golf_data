@@ -20,10 +20,16 @@ SELECT
   Descent_Angle AS descent_angle,
   Peak_Height__FT_ AS peak_height_ft,
   c.club_sort,
-  GENERATE_UUID() as shot_id,
-  ROW_NUMBER() OVER(PARTITION BY Club ORDER BY Practice_Date) as shot_number
+  GENERATE_UUID() AS shot_id,
+  ROW_NUMBER() OVER(PARTITION BY Club ORDER BY Practice_Date) AS shot_number,
   --To_Pin_YDS,
-  --image_url
+  --IMAGES
+  CASE
+    WHEN Club = '8 iron' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_8i.png'
+    ELSE NULL
+END
+  AS image_url
+  --END IMAGES
 FROM
   ${ref("golf_lake", "fact")} f
 LEFT JOIN (
