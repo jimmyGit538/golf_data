@@ -26,6 +26,8 @@ SELECT
   --IMAGES
   CASE
     WHEN Club = '8 iron' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_8i.png'
+    WHEN Club = '9 iron' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_9i.png'
+    WHEN Club = 'pw' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_PW.png'
     ELSE NULL
 END
   AS image_url
