@@ -6,6 +6,7 @@ config {
 SELECT
   DATE(Practice_Date) AS practice_date,
   Club AS club,
+  Club AS club_duplicate,
   Ball AS ball,
   Ball_Speed__MPH_ AS ball_speed_mph,
   Launch_Angle AS launch_angle,
