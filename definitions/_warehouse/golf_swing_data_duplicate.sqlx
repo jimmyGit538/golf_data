@@ -1,0 +1,14 @@
+config {
+    type: "table",
+    schema: "golf_warehouse",
+    bigquery: {
+        partitionBy: "practice_date",
+        clusterBy: ["club", "ball"]
+    }
+}
+
+SELECT
+  * EXCEPT (club),
+  club AS club_duplicate
+FROM
+  ${ref("cleaned")}
