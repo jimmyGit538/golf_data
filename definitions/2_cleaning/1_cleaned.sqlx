@@ -25,9 +25,20 @@ SELECT
   --To_Pin_YDS,
   --IMAGES
   CASE
+    WHEN Club = '3 iron' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_3i.png'
+    WHEN Club = '4 iron' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_4i.png'
+    WHEN Club = '5 iron' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_5i.png'
+    WHEN Club = '6 iron' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_6i.png'
+    WHEN Club = '7 iron' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_7i.png'
     WHEN Club = '8 iron' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_8i.png'
     WHEN Club = '9 iron' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_9i.png'
     WHEN Club = 'pw' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_PW.png'
+    WHEN Club = 'Driver' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_Driver.png'
+    WHEN Club = '3w' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Callaway_Wood_3W.png'
+    WHEN Club = '5w' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Callaway_Wood_5W.png'
+    WHEN Club = '52-Wedge' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Mizuno_Wedge_52.png'
+    WHEN Club = '56-Wedge' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Mizuno_Wedge_56.png'
+    WHEN Club = '60-Wedge' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Mizuno_Wedge_60.png'
     ELSE NULL
 END
   AS image_url
