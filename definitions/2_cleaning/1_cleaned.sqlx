@@ -4,7 +4,7 @@ config {
 }
 
 SELECT
-  Practice_Date AS practice_date,
+  DATE(Practice_Date) AS practice_date,
   Club AS club,
   Ball AS ball,
   Ball_Speed__MPH_ AS ball_speed_mph,
