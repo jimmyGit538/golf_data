@@ -3,7 +3,7 @@ config {
     schema: "golf_warehouse",
     bigquery: {
         partitionBy: "practice_date",
-        clusterBy: ["club", "ball"]
+        clusterBy: ["club_duplicate", "ball"]
     }
 }
 
