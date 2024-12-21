@@ -9,6 +9,8 @@ config {
 SELECT
   club,
   shot_number,
+  (SELECT AVG(carry_yds) FROM ${ref("cleaned")}) as avg_carry_yds,
+  (SELECT AVG(offline_yds) FROM ${ref("cleaned")}) as avg_carry_yds,
   carry_yds,
   offline_yds,
   STDDEV(ball_speed_mph) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_ball_speed_mph,
