@@ -9,6 +9,8 @@ config {
 SELECT
   club,
   shot_number,
+  carry_yds,
+  offline_yds,
   STDDEV(ball_speed_mph) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_ball_speed_mph,
   STDDEV(launch_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_launch_angle,
   STDDEV(side_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_side_angle,
