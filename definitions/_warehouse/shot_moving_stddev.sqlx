@@ -6,9 +6,11 @@ config {
     }
 }
 
+
 SELECT
   club,
   shot_number,
+  practice_date,
   avg.avg_carry_yds_100shots,
   avg.avg_offline_yds_100shots,
   avg.avg_carry_yds_100shots * 0.05 as carry_yds_target_deviation,
