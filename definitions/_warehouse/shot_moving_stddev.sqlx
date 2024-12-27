@@ -6,33 +6,37 @@ config {
     }
 }
 
-
 SELECT
-  club,
-  shot_number,
-  practice_date,
-  avg.avg_carry_yds_100shots,
-  avg.avg_offline_yds_100shots,
-  avg.avg_carry_yds_100shots * 0.05 as carry_yds_target_deviation,
-  STDDEV(ball_speed_mph) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_ball_speed_mph,
-  STDDEV(launch_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_launch_angle,
-  STDDEV(side_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_side_angle,
-  STDDEV(backspin_rpm) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_backspin_rpm,
-  STDDEV(sidespin_rpm) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_sidespin_rpm,
-  STDDEV(tilt_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_tilt_angle,
-  STDDEV(total_spin_rpm) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_total_spin_rpm,
-  STDDEV(carry_yds) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_carry_yds,
-  STDDEV(total_yds) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_total_yds,
-  STDDEV(offline_yds) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_offline_yds,
-  STDDEV(descent_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_descent_angle,
-  STDDEV(peak_height_ft) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_peak_height_ft,
-FROM
-  ${ref("cleaned")}
+  stddev.*,
+  avg.avg_carry_yds_50shots * 0.05 AS carry_yds_target_deviation_50shots,
+  stddev.stddev_carry_yds_50shots/avg.avg_carry_yds_50shots AS carry_yds_perc_deviation_50shots
+FROM (
+  SELECT
+    club,
+    shot_number,
+    practice_date,
+    STDDEV(ball_speed_mph) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_ball_speed_mph,
+    STDDEV(launch_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_launch_angle,
+    STDDEV(side_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_side_angle,
+    STDDEV(backspin_rpm) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_backspin_rpm,
+    STDDEV(sidespin_rpm) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_sidespin_rpm,
+    STDDEV(tilt_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_tilt_angle,
+    STDDEV(total_spin_rpm) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_total_spin_rpm,
+    STDDEV(carry_yds) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_carry_yds,
+    STDDEV(total_yds) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_total_yds,
+    STDDEV(offline_yds) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_offline_yds,
+    STDDEV(descent_angle) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_descent_angle,
+    STDDEV(peak_height_ft) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 10 PRECEDING AND CURRENT ROW) tenshotstddev_peak_height_ft,
+--Do 50-shot STDDEV
+    STDDEV(carry_yds) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 50 PRECEDING AND CURRENT ROW) stddev_carry_yds_50shots
+  FROM
+    ${ref("cleaned")} ) stddev
 LEFT JOIN (
   SELECT
     club,
     shot_number,
     AVG(carry_yds) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 100 PRECEDING AND CURRENT ROW) AS avg_carry_yds_100shots,
+    AVG(carry_yds) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 50 PRECEDING AND CURRENT ROW) AS avg_carry_yds_50shots,
     AVG(offline_yds) OVER (PARTITION BY club ORDER BY shot_number ROWS BETWEEN 100 PRECEDING AND CURRENT ROW) AS avg_offline_yds_100shots
   FROM
     ${ref("cleaned")} ) avg
