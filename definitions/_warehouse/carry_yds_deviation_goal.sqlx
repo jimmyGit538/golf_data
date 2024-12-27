@@ -1,0 +1,18 @@
+config {
+    type: "table",
+    schema: "golf_warehouse",
+    bigquery: {
+        clusterBy: ["practice_date"]
+    }
+}
+
+
+  SELECT
+    practice_date,
+    club_duplicate,
+    STDDEV(carry_yds) as stddev_carry_yds_per_practice,
+    AVG(carry_yds) AS avg_carry_yds_per_practice
+  FROM
+    ${ref("golf_swing_data_duplicate")}
+  GROUP BY
+    ALL
