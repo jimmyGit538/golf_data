@@ -8,8 +8,7 @@ config {
 
 SELECT
   stddev.*,
-  avg.avg_carry_yds_50shots * 0.05 AS carry_yds_target_deviation_50shots,
-  stddev.stddev_carry_yds_50shots/avg.avg_carry_yds_50shots AS carry_yds_perc_deviation_50shots
+  (stddev.stddev_carry_yds_50shots*2)/avg.avg_carry_yds_50shots AS carry_yds_dispersion_perc_50shots
 FROM (
   SELECT
     club,
