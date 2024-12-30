@@ -6,32 +6,14 @@ config {
     }
 }
 
-
 SELECT
-*,
-IF(carry_ydsavg_carry_yds_per_practice-stddev_carry_yds_per_practice
-FROM(
-  SELECT
-    practice_date,
-    club_duplicate,
-    MIN(carry_yds) as min_carry_yds,
-    MAX(carry_yds) as max_carry_yds,
-    MAX(carry_yds) - MIN(carry_yds) as dispersion_yds,
-    STDDEV(carry_yds) as stddev_carry_yds_per_practice,
-    AVG(carry_yds) AS avg_carry_yds_per_practice
-  FROM
-  (
-    SELECT
-    *,
-    IF(carry_yds <)
-    FROM
-    ${ref("golf_swing_data_duplicate")}
-    GROUP BY
-    ALL
-    
-    
-  )
-    
-  GROUP BY
-    ALL
-)
+  practice_date,
+  club_duplicate,
+  MIN(carry_yds) AS min_carry_yds,
+  MAX(carry_yds) AS max_carry_yds,
+  MAX(carry_yds) - MIN(carry_yds) AS dispersion_yds,
+  AVG(carry_yds) AS avg_carry_yds_per_practice,
+FROM
+  ${ref("carry_yds_ex_outliers")}
+GROUP BY
+  ALL
