@@ -1,0 +1,37 @@
+config {
+    type: "table",
+    schema: "golf_transform",
+    bigquery: {
+        clusterBy: ["practice_date"]
+    }
+}
+
+
+SELECT
+  practice_date,
+  club_duplicate,
+  shot_id,
+  carry_yds,
+  agg.stddev_carry_yds_per_practice,
+  agg.avg_carry_yds_per_practice,
+  ABS(carry_yds-agg.avg_carry_yds_per_practice) AS deviation,
+  ABS(carry_yds-agg.avg_carry_yds_per_practice)/agg.stddev_carry_yds_per_practice AS number_of_deviations,
+  IF(ABS(carry_yds-agg.avg_carry_yds_per_practice)/agg.stddev_carry_yds_per_practice>2, TRUE, FALSE) as outlier
+FROM
+  `flexgen-343700.golf_warehouse.golf_swing_data_duplicate`
+LEFT JOIN (
+  SELECT
+    practice_date,
+    club_duplicate,
+    STDDEV(carry_yds) AS stddev_carry_yds_per_practice,
+    AVG(carry_yds) AS avg_carry_yds_per_practice
+  FROM
+    `flexgen-343700.golf_warehouse.golf_swing_data_duplicate`
+  GROUP BY
+    ALL ) agg
+USING
+  ( practice_date,
+    club_duplicate )
+GROUP BY
+  ALL
+  HAVING Outlier IS FALSE
