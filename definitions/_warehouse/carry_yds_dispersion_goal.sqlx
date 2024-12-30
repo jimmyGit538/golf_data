@@ -9,10 +9,12 @@ config {
 SELECT
   practice_date,
   club_duplicate,
+  club_sort,
   MIN(carry_yds) AS min_carry_yds,
   MAX(carry_yds) AS max_carry_yds,
   MAX(carry_yds) - MIN(carry_yds) AS dispersion_yds,
   AVG(carry_yds) AS avg_carry_yds_per_practice,
+  DENSE_RANK() OVER (PARTITION BY club_duplicate ORDER BY practice_date desc) as recency_index
 FROM
   ${ref("carry_yds_ex_outliers_duplicate")}
 GROUP BY

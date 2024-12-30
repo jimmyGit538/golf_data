@@ -9,6 +9,7 @@ config {
 SELECT
   practice_date,
   club_duplicate,
+  club_sort,
   shot_number,
   carry_yds,
   agg.stddev_carry_yds_per_practice,
