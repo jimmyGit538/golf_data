@@ -14,6 +14,6 @@ SELECT
   MAX(carry_yds) - MIN(carry_yds) AS dispersion_yds,
   AVG(carry_yds) AS avg_carry_yds_per_practice,
 FROM
-  ${ref("carry_yds_ex_outliers")}
+  ${ref("carry_yds_ex_outliers_duplicate")}
 GROUP BY
   ALL

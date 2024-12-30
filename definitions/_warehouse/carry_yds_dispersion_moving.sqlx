@@ -1,0 +1,25 @@
+config {
+    type: "table",
+    schema: "golf_warehouse",
+    bigquery: {
+        clusterBy: ["club"]
+    }
+}
+
+SELECT
+  *,
+  shot_number_new AS shot_number,
+  max_50_shots-min_50_shots AS carry_yds_dispersion,
+  (max_50_shots-min_50_shots)/avg_50_shots AS dispersion_perc_50_shot_moving
+FROM (
+  SELECT
+    club,
+    shot_number_new,
+    carry_yds,
+    MAX(carry_yds) OVER (PARTITION BY club ORDER BY shot_number_new ROWS BETWEEN 50 PRECEDING AND CURRENT ROW) AS max_50_shots,
+    MIN(carry_yds) OVER (PARTITION BY club ORDER BY shot_number_new ROWS BETWEEN 50 PRECEDING AND CURRENT ROW) AS min_50_shots,
+    AVG(carry_yds) OVER (PARTITION BY club ORDER BY shot_number_new ROWS BETWEEN 50 PRECEDING AND CURRENT ROW) AS avg_50_shots,
+  FROM
+    ${ref("carry_yds_ex_outliers")}
+  GROUP BY
+    ALL )

@@ -8,7 +8,7 @@ config {
 
 SELECT
   practice_date,
-  club,
+  club_duplicate,
   shot_number,
   carry_yds,
   agg.stddev_carry_yds_per_practice,
@@ -17,22 +17,22 @@ SELECT
   ABS(carry_yds-agg.avg_carry_yds_per_practice)/agg.stddev_carry_yds_per_practice AS number_of_deviations,
 IF
   (ABS(carry_yds-agg.avg_carry_yds_per_practice)/agg.stddev_carry_yds_per_practice>2, TRUE, FALSE) AS outlier,
-  ROW_NUMBER() OVER(PARTITION BY club ORDER BY shot_number) AS shot_number_new
+  ROW_NUMBER() OVER(PARTITION BY club_duplicate ORDER BY shot_number) AS shot_number_new
 FROM
-  ${ref("cleaned")}
+  ${ref("cleaned_duplicate")}
 LEFT JOIN (
   SELECT
     practice_date,
-    club,
+    club_duplicate,
     STDDEV(carry_yds) AS stddev_carry_yds_per_practice,
     AVG(carry_yds) AS avg_carry_yds_per_practice
   FROM
-    ${ref("cleaned")}
+    ${ref("cleaned_duplicate")}
   GROUP BY
     ALL ) agg
 USING
   ( practice_date,
-    club )
+    club_duplicate )
 GROUP BY
   ALL
 HAVING
