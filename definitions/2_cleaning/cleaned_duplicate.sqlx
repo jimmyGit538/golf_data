@@ -1,6 +1,6 @@
 config {
     type: "table",
-    schema: "golf_warehouse",
+    schema: "golf_cleaning",
     bigquery: {
         partitionBy: "practice_date",
         clusterBy: ["club_duplicate", "ball"]
@@ -8,6 +8,7 @@ config {
 }
 
 SELECT
-  * 
+  * EXCEPT (club),
+  club AS club_duplicate
 FROM
-  ${ref("cleaned_duplicate")}
+  ${ref("cleaned")}

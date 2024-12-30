@@ -6,7 +6,6 @@ config {
     }
 }
 
-
 SELECT
   practice_date,
   club_duplicate,
@@ -16,9 +15,10 @@ SELECT
   agg.avg_carry_yds_per_practice,
   ABS(carry_yds-agg.avg_carry_yds_per_practice) AS deviation,
   ABS(carry_yds-agg.avg_carry_yds_per_practice)/agg.stddev_carry_yds_per_practice AS number_of_deviations,
-  IF(ABS(carry_yds-agg.avg_carry_yds_per_practice)/agg.stddev_carry_yds_per_practice>2, TRUE, FALSE) as outlier
+IF
+  (ABS(carry_yds-agg.avg_carry_yds_per_practice)/agg.stddev_carry_yds_per_practice>2, TRUE, FALSE) AS outlier
 FROM
-  `flexgen-343700.golf_warehouse.golf_swing_data_duplicate`
+  ${ref("cleaned_duplicate")}
 LEFT JOIN (
   SELECT
     practice_date,
@@ -26,7 +26,7 @@ LEFT JOIN (
     STDDEV(carry_yds) AS stddev_carry_yds_per_practice,
     AVG(carry_yds) AS avg_carry_yds_per_practice
   FROM
-    `flexgen-343700.golf_warehouse.golf_swing_data_duplicate`
+    ${ref("cleaned_duplicate")}
   GROUP BY
     ALL ) agg
 USING
@@ -34,4 +34,5 @@ USING
     club_duplicate )
 GROUP BY
   ALL
-  HAVING Outlier IS FALSE
+HAVING
+  Outlier IS FALSE
