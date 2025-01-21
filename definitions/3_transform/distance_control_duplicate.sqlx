@@ -11,7 +11,6 @@ SELECT
   club_duplicate,
   club_sort,
   shot_number,
-  offline_yds,
   carry_yds
 FROM
   ${ref("cleaned_duplicate")}
