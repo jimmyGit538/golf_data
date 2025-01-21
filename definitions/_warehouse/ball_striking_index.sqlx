@@ -1,0 +1,54 @@
+config {
+    type: "table",
+    schema: "golf_warehouse",
+    bigquery: {
+        clusterBy: ["practice_date"]
+    }
+}
+
+WITH
+  base AS (
+  SELECT
+    practice_date,
+    club_duplicate,
+    club_sort,
+    shot_number,
+  IF
+    (ABS(ball_speed_mph-agg.max_ball_speed) < agg.max_ball_speed*0.05, 1, 0) AS within_5_perc_max_ball_speed,
+    IF
+    (ABS(launch_angle-agg.avg_launch_angle_per_practice) < 1.5, 1, 0) AS within_launch_angle_target,
+
+  FROM
+    ${ref("ball_striking_index_duplicate")}
+  LEFT JOIN (
+    SELECT
+      practice_date,
+      club_duplicate,
+      AVG(launch_angle) AS avg_launch_angle_per_practice,
+      MAX(ball_speed_mph) as max_ball_speed
+    FROM
+      ${ref("ball_striking_index_duplicate")}
+    GROUP BY
+      ALL ) agg
+  USING
+    (practice_date,
+      club_duplicate)
+  GROUP BY
+    ALL )
+    /*
+
+    */
+SELECT
+  practice_date,
+  club_duplicate,
+  club_sort,
+  SUM(within_5_perc_max_ball_speed) AS within_5_perc_max_ball_speed,
+    SUM(within_launch_angle_target) AS within_launch_angle_target,
+  COUNT(*) AS shots,
+  SUM(within_5_perc_max_ball_speed)/count(*) as within_5_perc_max_ball_speed_perc,
+  SUM(within_launch_angle_target)/count(*) as within_launch_angle_target_perc,
+  DENSE_RANK() OVER (PARTITION BY club_duplicate ORDER BY practice_date DESC) AS recency_index
+FROM
+  base
+GROUP BY
+  ALL

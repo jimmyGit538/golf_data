@@ -11,8 +11,8 @@ SELECT
   club_duplicate,
   club_sort,
   shot_number,
-  offline_yds,
-  carry_yds
+  ball_speed_mph,
+  launch_angle
 FROM
   ${ref("cleaned_duplicate")}
 
