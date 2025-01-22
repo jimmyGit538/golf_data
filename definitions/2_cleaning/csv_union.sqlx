@@ -1,0 +1,10 @@
+config {
+    type: "table",
+    schema: "golf_cleaning",
+    name: "csv_union"
+}
+
+SELECT
+  *
+FROM
+  `flexgen-343700.golf_cleaning.csv_*`

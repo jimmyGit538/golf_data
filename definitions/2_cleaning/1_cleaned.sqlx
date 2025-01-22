@@ -45,13 +45,13 @@ END
   AS image_url
   --END IMAGES
 FROM
-  ${ref("golf_lake", "fact")} f
+  ${ref("golf_cleaning", "csv_union")} f
 LEFT JOIN (
   SELECT
     Club,
     DENSE_RANK() OVER(ORDER BY AVG(total_yds) DESC) AS club_sort
   FROM
-    ${ref("golf_lake", "fact")}
+    ${ref("golf_cleaning", "csv_union")}
   GROUP BY
     1 ) c
 USING
