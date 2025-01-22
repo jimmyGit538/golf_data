@@ -1,0 +1,29 @@
+config {
+    type: "table",
+    schema: "golf_cleaning",
+    name: "union"
+}
+
+SELECT
+  * EXCEPT(Club),
+  CASE
+    WHEN Club LIKE '%3i%' THEN "3 iron"
+    WHEN Club LIKE '%4i%' THEN "4 iron"
+    WHEN Club LIKE '%5i%' THEN "5 iron"
+    WHEN Club LIKE '%6i%' THEN "6 iron"
+    WHEN Club LIKE '%7i%' THEN "7 iron"
+    WHEN Club LIKE '%8i%' THEN "8 iron"
+    WHEN Club LIKE '%9i%' THEN "9 iron"
+    --WHEN Club LIKE '%pw%' THEN "pw"
+    WHEN Club LIKE '%52%' THEN "52-Wedge"
+    WHEN Club LIKE '%56%' THEN "56-Wedge"
+    WHEN Club LIKE '%60%' THEN "60-Wedge"
+    WHEN Club IN("driver", "nike ignite driver") THEN "Driver"
+    WHEN Club LIKE '%driver%'
+  AND Carry_YDS = 173.0 THEN "7 iron"
+    WHEN Club LIKE '%hybrid%' AND Practice_Date ='2024-09-21' THEN "7 iron"
+    ELSE Club
+END
+  AS Club
+FROM
+  `flexgen-343700.golf_cleaning.csv_*`

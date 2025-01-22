@@ -5,21 +5,21 @@ config {
 
 SELECT
   Practice_Date,
-  string_field_0 AS Club,
+  LOWER(string_field_0) AS Club,
   string_field_1 AS Ball,
   CAST(string_field_2 AS FLOAT64) AS Ball_Speed__MPH_,
   CAST(string_field_3 AS FLOAT64) AS Launch_Angle,
-  CAST(string_field_3 AS FLOAT64) AS Side_Angle,
-  CAST(string_field_4 AS FLOAT64) AS Backspin__RPM_,
-  CAST(string_field_5 AS FLOAT64) AS Sidespin__RPM_,
-  CAST(string_field_6 AS FLOAT64) AS Tilt_Angle,
-  CAST(string_field_7 AS FLOAT64) AS Total_Spin__RPM_,
-  CAST(string_field_8 AS FLOAT64) AS Carry_YDS,
-  CAST(string_field_9 AS FLOAT64) AS Total_YDS,
-  CAST(string_field_10 AS FLOAT64) AS Offline_YDS,
-  CAST(string_field_11 AS FLOAT64) AS Descent_Angle,
-  CAST(string_field_12 AS FLOAT64) AS Peak_Height__FT_,
-  CAST(string_field_13 AS FLOAT64) AS To_Pin_YDS,
+  CAST(string_field_4 AS FLOAT64) AS Side_Angle,
+  CAST(string_field_5 AS FLOAT64) AS Backspin__RPM_,
+  CAST(string_field_6 AS FLOAT64) AS Sidespin__RPM_,
+  CAST(string_field_7 AS FLOAT64) AS Tilt_Angle,
+  CAST(string_field_8 AS FLOAT64) AS Total_Spin__RPM_,
+  CAST(string_field_9 AS FLOAT64) AS Carry_YDS,
+  CAST(string_field_10 AS FLOAT64) AS Total_YDS,
+  CAST(string_field_11 AS FLOAT64) AS Offline_YDS,
+  CAST(string_field_12 AS FLOAT64) AS Descent_Angle,
+  CAST(string_field_13 AS FLOAT64) AS Peak_Height__FT_,
+  CAST(string_field_14 AS FLOAT64) AS To_Pin_YDS,
 FROM
   ${ref("golf_lake", "ForesightReport_10_08_24")}
 CROSS JOIN (
@@ -37,3 +37,4 @@ WHERE
   AND string_field_0 NOT IN('Average',
     'Std. Dev.',
     'Club')
+    AND string_field_0 NOT LIKE '%Foresight%'
