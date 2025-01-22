@@ -3,9 +3,8 @@ config {
     schema: "golf_cleaning",
 }
 
-
 SELECT
-Practice_Date,
+  Practice_Date,
   string_field_0 AS Club,
   string_field_1 AS Ball,
   CAST(string_field_2 AS FLOAT64) AS Ball_Speed__MPH_,
@@ -22,7 +21,7 @@ Practice_Date,
   CAST(string_field_12 AS FLOAT64) AS Peak_Height__FT_,
   CAST(string_field_13 AS FLOAT64) AS To_Pin_YDS,
 FROM
-  `flexgen-343700.golf_lake.ForesightReport_9_21_24`
+  ${ref("golf_lake", "ForesightReport_9_21_24")}
 CROSS JOIN (
   SELECT
     *
@@ -30,7 +29,7 @@ CROSS JOIN (
     SELECT
       PARSE_DATE('%m/%d/%Y', REGEXP_EXTRACT(string_field_0, r'\d{1,2}/\d{1,2}/\d{4}')) AS Practice_Date
     FROM
-      `flexgen-343700.golf_lake.ForesightReport_9_21_24` )
+      ${ref("golf_lake", "ForesightReport_9_21_24")} )
   WHERE
     Practice_Date IS NOT NULL )
 WHERE
