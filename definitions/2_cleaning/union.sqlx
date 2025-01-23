@@ -19,9 +19,6 @@ SELECT
     WHEN Club LIKE '%56%' THEN "56-Wedge"
     WHEN Club LIKE '%60%' THEN "60-Wedge"
     WHEN Club IN("driver", "nike ignite driver") THEN "Driver"
-    WHEN Club LIKE '%driver%'
-  AND Carry_YDS = 173.0 THEN "7 iron"
-    WHEN Club LIKE '%hybrid%' AND Practice_Date ='2024-09-21' THEN "7 iron"
     ELSE Club
 END
   AS Club
