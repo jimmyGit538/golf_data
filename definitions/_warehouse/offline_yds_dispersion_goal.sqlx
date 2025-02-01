@@ -16,14 +16,14 @@ WITH
   IF
     (ABS(offline_yds) > agg.avg_carry_yds_per_practice * .10, 1, 0) AS offline_within_10_perc
   FROM
-    ${ref("offline_yds_duplicate")}
+    ${ref("cleaned_duplicate")}
   LEFT JOIN (
     SELECT
       practice_date,
       club_duplicate,
       AVG(carry_yds) AS avg_carry_yds_per_practice,
     FROM
-      ${ref("offline_yds_duplicate")}
+      ${ref("cleaned_duplicate")}
     GROUP BY
       ALL ) agg
   USING

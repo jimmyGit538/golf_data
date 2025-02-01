@@ -16,14 +16,14 @@ WITH
   IF
     (ABS(carry_yds-agg.avg_carry_yds_per_practice) < 5, 1, 0) AS carry_within_5_yds
   FROM
-    ${ref("distance_control_duplicate")}
+    ${ref("cleaned_duplicate")}
   LEFT JOIN (
     SELECT
       practice_date,
       club_duplicate,
       AVG(carry_yds) AS avg_carry_yds_per_practice,
     FROM
-      ${ref("distance_control_duplicate")}
+      ${ref("cleaned_duplicate")}
     GROUP BY
       ALL ) agg
   USING

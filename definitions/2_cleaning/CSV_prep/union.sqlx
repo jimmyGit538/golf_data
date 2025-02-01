@@ -8,12 +8,12 @@ SELECT
   * EXCEPT(Club),
   CASE
     WHEN Club LIKE '%3i%' THEN "3 iron"
-    WHEN Club LIKE '%4i%' THEN "4 iron"
-    WHEN Club LIKE '%5i%' THEN "5 iron"
-    WHEN Club LIKE '%6i%' THEN "6 iron"
-    WHEN Club LIKE '%7i%' THEN "7 iron"
-    WHEN Club LIKE '%8i%' THEN "8 iron"
-    WHEN Club LIKE '%9i%' THEN "9 iron"
+    WHEN Club LIKE '%4%' THEN "4 iron"
+    WHEN Club LIKE '%5%' THEN "5 iron"
+    WHEN Club LIKE '%6%' THEN "6 iron"
+    WHEN Club LIKE '%7%' THEN "7 iron"
+    WHEN Club LIKE '%8%' THEN "8 iron"
+    WHEN Club LIKE '%9%' THEN "9 iron"
     --WHEN Club LIKE '%pw%' THEN "pw"
     WHEN Club LIKE '%52%' THEN "52-Wedge"
     WHEN Club LIKE '%56%' THEN "56-Wedge"
