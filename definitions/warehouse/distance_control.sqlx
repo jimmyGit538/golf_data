@@ -14,16 +14,16 @@ WITH
     club_sort,
     shot_number,
   IF
-    (ABS(offline_yds) > agg.avg_carry_yds_per_practice * .10, 1, 0) AS offline_within_10_perc
+    (ABS(carry_yds-agg.avg_carry_yds_per_practice) < 5, 1, 0) AS carry_within_5_yds
   FROM
-    ${ref("offline_yds_duplicate")}
+    ${ref("cleaned_duplicate")}
   LEFT JOIN (
     SELECT
       practice_date,
       club_duplicate,
       AVG(carry_yds) AS avg_carry_yds_per_practice,
     FROM
-      ${ref("offline_yds_duplicate")}
+      ${ref("cleaned_duplicate")}
     GROUP BY
       ALL ) agg
   USING
@@ -38,9 +38,9 @@ SELECT
   practice_date,
   club_duplicate,
   club_sort,
-  SUM(offline_within_10_perc) AS offline_within_10_perc,
+  SUM(carry_within_5_yds) AS carry_within_5_yds,
   COUNT(*) AS shots,
-  SUM(offline_within_10_perc)/count(*) as shots_within_10_percent_carry_avg,
+  SUM(carry_within_5_yds)/count(*) as shots_within_5_yds_carry_avg,
   DENSE_RANK() OVER (PARTITION BY club_duplicate ORDER BY practice_date DESC) AS recency_index
 FROM
   base

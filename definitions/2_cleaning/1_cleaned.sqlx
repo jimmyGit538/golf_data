@@ -23,8 +23,6 @@ SELECT
   c.club_sort,
   GENERATE_UUID() AS shot_id,
   ROW_NUMBER() OVER(PARTITION BY Club ORDER BY Practice_Date) AS shot_number,
-  --To_Pin_YDS,
-  --IMAGES
   CASE
     WHEN Club = '3 iron' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_3i.png'
     WHEN Club = '4 iron' THEN 'https://storage.cloud.google.com/golf_dash_club_images/Titleist_4i.png'

@@ -19,7 +19,7 @@ WITH
     (ABS(launch_angle-agg.avg_launch_angle_per_practice) < 1.5, 1, 0) AS within_launch_angle_target,
 
   FROM
-    ${ref("ball_striking_index_duplicate")}
+    ${ref("cleaned_duplicate")}
   LEFT JOIN (
     SELECT
       practice_date,
@@ -27,7 +27,7 @@ WITH
       AVG(launch_angle) AS avg_launch_angle_per_practice,
       MAX(ball_speed_mph) as max_ball_speed
     FROM
-      ${ref("ball_striking_index_duplicate")}
+      ${ref("cleaned_duplicate")}
     GROUP BY
       ALL ) agg
   USING
